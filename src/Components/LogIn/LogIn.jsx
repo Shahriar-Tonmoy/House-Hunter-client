@@ -1,6 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const LogIn = () => {
+
+    const [users, setUsers] = useState();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [flag, setFlag] = useState(0);
+
+    useEffect(() => {
+        fetch(`http://localhost:3000/users?email=${email}&password=${password}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setUsers(data)
+            console.log(data);
+            if(data.length === 0 && flag !== 0){
+                toast("Invalid Email/password");
+                setFlag(0);
+            }
+          }
+          );
+      }, [email,password]);
+
+    const handleLogIn = e =>{
+        e.preventDefault();
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+
+        setEmail(email);
+        setPassword(password);
+        setFlag(1);
+    }
     return (
         <div className="hero min-h-screen bg-base-200 bg-gradient-to-r from-[#6B240C] to-[#994D1C]">
       <ToastContainer></ToastContainer>
@@ -8,53 +41,9 @@ const LogIn = () => {
         <div className="text-center lg:text-left"></div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-[#F5CCA0] py-20 px-5">
           <h1 className="text-[#6B240C] text-3xl font-bold text-center">
-            Registration
+            Sign in
           </h1>
-          <form className="card-body" onSubmit={handleNewUser}>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text text-[#6B240C] font-bold">
-                  Name
-                </span>
-              </label>
-              <input
-                type="text"
-                className="input input-bordered focus:outline-none text-[#6B240C] font-semibold bg-[#E48F45]"
-                name="name"
-                required
-              />
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text text-[#6B240C] font-bold">
-                  Role
-                </span>
-              </label>
-              <select
-                name="role"
-                className="select select-info border-none focus:outline-none w-full bg-[#E48F45] text-[#6B240C] font-semibold  max-w-xs"
-              >
-                <option className="bg-orange-300 text-[#6B240C] font-semibold">
-                  House Owner
-                </option>
-                <option className="bg-orange-100 text-[#6B240C] font-semibold">
-                  House Renter
-                </option>
-              </select>
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text text-[#6B240C] font-bold">
-                  Phone Number
-                </span>
-              </label>
-              <input
-                type="tel"
-                className="input input-bordered focus:outline-none text-[#6B240C] font-semibold bg-[#E48F45]"
-                name="phone"
-                required
-              />
-            </div>
+          <form className="card-body" onSubmit={handleLogIn}>
             <div className="form-control">
               <label className="label">
                 <span className="label-text text-[#6B240C] font-bold">

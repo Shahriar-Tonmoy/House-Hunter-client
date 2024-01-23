@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
   const [value, setValue] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const navigate = useNavigate();
 
   const handleNewUser = (e) => {
@@ -26,21 +28,31 @@ const Registration = () => {
       password,
     };
     form.reset();
-    fetch("http://localhost:3000/users", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newUser),
-    })
+
+    fetch(`http://localhost:3000/users?email=${email}&password=${password}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        toast("User created successfully");
-        setTimeout(() => {
-            navigate("/")
-            location.reload();
-          }, 2000)
+        if (!data.length) {
+          fetch(`http://localhost:3000/users?email`, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+              toast("User created successfully");
+              setTimeout(() => {
+                // navigate("/")
+                // location.reload();
+              }, 2000);
+            });
+        }
+        else{
+            toast("This mail has already has an account")
+        }
       });
   };
 
