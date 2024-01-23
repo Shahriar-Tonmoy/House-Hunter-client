@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
 const LogIn = () => {
 
+    const navigate = useNavigate();
     const [users, setUsers] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -20,9 +22,17 @@ const LogIn = () => {
                 toast("Invalid Email/password");
                 setFlag(0);
             }
+            else if(data.length!== 0){
+                toast("logIn Successfully");
+                setTimeout(() => {
+                navigate("/")
+                //location.reload();
+                console.log(flag);
+              }, 2000);
+            }
           }
           );
-      }, [email,password]);
+      }, [email,password,flag,navigate]);
 
     const handleLogIn = e =>{
         e.preventDefault();
@@ -72,7 +82,7 @@ const LogIn = () => {
             </div>
             <div className="form-control mt-6">
               <button className="btn bg-opacity-0 font-bold text-[#6B240C] border-[#6B240C] hover:bg-opacity-0 hover:border-[#6B240C]">
-                Sign up
+                Log In
               </button>
             </div>
           </form>

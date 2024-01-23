@@ -45,8 +45,8 @@ const Registration = () => {
               console.log(data);
               toast("User created successfully");
               setTimeout(() => {
-                // navigate("/")
-                // location.reload();
+                navigate("/")
+                location.reload();
               }, 2000);
             });
         }
