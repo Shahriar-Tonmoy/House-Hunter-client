@@ -29,11 +29,11 @@ const Registration = () => {
     };
     form.reset();
 
-    fetch(`http://localhost:3000/users?email=${email}&password=${password}`)
+    fetch(`https://house-hunter-server-five.vercel.app/users?email=${email}&password=${password}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.length) {
-          fetch(`http://localhost:3000/users?email`, {
+          fetch(`https://house-hunter-server-five.vercel.app/users?email`, {
             method: "POST",
             headers: {
               "content-type": "application/json",

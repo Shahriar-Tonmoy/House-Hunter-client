@@ -14,6 +14,7 @@ const AddNewHouse = () => {
     const roomSize = form.roomSize.value;
     const photo = form.photo.value;
     const date = form.date.value;
+    const phoneNumber = form.phoneNumber.value;
 
     const newHouse = {
       name,
@@ -24,9 +25,10 @@ const AddNewHouse = () => {
       roomSize,
       photo,
       date,
+      phoneNumber
     };
     form.reset();
-    fetch("http://localhost:3000/houses", {
+    fetch("https://house-hunter-server-five.vercel.app/houses", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -155,6 +157,19 @@ const AddNewHouse = () => {
                     name="date"
                     required
                     min={new Date().toISOString().split("T")[0]}
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-[#6B240C] font-bold ">
+                      Phone Number
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    className="input input-bordered focus:outline-none text-[#6B240C] font-semibold bg-[#E48F45]"
+                    name="phoneNumber"
+                    required
                   />
                 </div>
               </div>

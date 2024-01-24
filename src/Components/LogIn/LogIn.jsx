@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AuthProvider, { AuthContext } from '../../AuthProvider/AuthProvider';
 
+export const LoginAuthContext = createContext(null);
 
 const LogIn = () => {
 
     const navigate = useNavigate();
+    const {SignInUser} = useContext(AuthContext);
     const [users, setUsers] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [flag, setFlag] = useState(0);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/users?email=${email}&password=${password}`)
+        fetch(`https://house-hunter-server-five.vercel.app/users?email=${email}&password=${password}`)
           .then((res) => res.json())
           .then((data) => {
             setUsers(data)
@@ -23,7 +26,7 @@ const LogIn = () => {
                 setFlag(0);
             }
             else if(data.length!== 0){
-                toast("logIn Successfully");
+                toast("login Successfully");
                 setTimeout(() => {
                 navigate("/")
                 //location.reload();
@@ -37,15 +40,17 @@ const LogIn = () => {
     const handleLogIn = e =>{
         e.preventDefault();
         const form = e.target;
-        const email = form.email.value;
+        const userEmail = form.email.value;
         const password = form.password.value;
 
-        setEmail(email);
+        SignInUser(userEmail);
+
+        setEmail(userEmail);
         setPassword(password);
         setFlag(1);
     }
     return (
-        <div className="hero min-h-screen bg-base-200 bg-gradient-to-r from-[#6B240C] to-[#994D1C]">
+     <div className="hero min-h-screen bg-base-200 bg-gradient-to-r from-[#6B240C] to-[#994D1C]">
       <ToastContainer></ToastContainer>
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left"></div>
